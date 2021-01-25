@@ -12,6 +12,10 @@ Vue.config.productionTip = false
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.component(
+  'navbar', require('./components/Navbar.vue').default
+);
+
+Vue.component(
   'sidebar', require('./components/Sidebar.vue').default
 );
 
