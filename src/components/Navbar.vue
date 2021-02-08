@@ -12,14 +12,21 @@
       </div>
     </div>
 
-    <div class="" 
+    <div class="vertical_menu" 
       :class="{ 
         menu_container_closed: !this.menuOpen, 
         menu_container_open: this.menuOpen
       }"
-    > 
-      <router-link to="/" :class="{display_none:!menuOpen}">Home</router-link> |
-      <router-link to="/about" :class="{display_none:!menuOpen}">About</router-link>
+    >
+      <transition
+        v-on:before-enter="beforeEnter"
+        v-on:enter="enter"
+        v-on:leave="leave"
+        v-bind:css="false"
+      >
+        <router-link to="/" v-if="menuOpen">Home</router-link>
+        <router-link to="/about" v-if="menuOpen">About</router-link>
+      </transition>
     </div>
     <div class="nav_overlay" 
       :class="{transparent: !menuOpen}"
@@ -30,6 +37,8 @@
 
 <script>
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import anime from 'animejs/lib/anime.es.js';
+
 export default {
   data() {
     return {
@@ -45,6 +54,28 @@ export default {
         menu_container_closed: !this.menuOpen,
         menu_container_open: this.menuOpen
       }
+    },
+    methods: {
+      beforeEnter(el) {
+        el.style.opacity = 0
+        el.style.translateY = -50;
+      },
+      enter(el) {
+        console.log(el)
+        
+        anime({
+          targets: el,
+          translateY: 50,
+          loop: false,
+          delay: function() {
+            return 1000;
+          },
+          endDelay: function(el, i, l) {
+            return (l - i) * 100;
+          }
+        })
+      },
+      leave() {}
     },
   }
 }
@@ -66,8 +97,15 @@ export default {
     padding: 1rem;
     z-index: 1;
   }
+  .vertical_menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
   .menu_container_open {
     min-width: 15rem;
+      transition: all ease-in-out 0.4s;
   }
   .menu_container_open, .menu_container_closed {
     height: 100vh;
@@ -76,7 +114,8 @@ export default {
     z-index: 3;
     top: 0;
     right: 0;
-    transition: all ease-in-out 0.2s;
+    transition: all ease-in-out 0.4s;
+    border-radius: 1rem;
     box-shadow:
       0 2.8px 2.2px rgba(0, 0, 0, 0.034),
       0 6.7px 5.3px rgba(0, 0, 0, 0.048),
@@ -94,6 +133,8 @@ export default {
   }
   .name_container {
     min-width: 50vw;
+    text-align: start;
+    padding-left: 0.5rem;
   }
   .name h4, .name h5 {
     margin: 0
@@ -130,11 +171,13 @@ export default {
     left: 0;
     width: 100vw;
     height: 100vh;
-    transition: all 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
     cursor: pointer;
   }
   .transparent {
     opacity: 0;
     z-index: 0;
+    height: 0;
+    width: 0;
   }
 </style>
