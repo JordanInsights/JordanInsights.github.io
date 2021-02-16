@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{dark_mode: darkMode}">
+  <div id="app">
     <Navbar ref="navbar" 
       @navEvent="handleNavEvent($event)"
       @darkMode="handleDarkMode($event)"
@@ -28,8 +28,8 @@ export default {
       this.blur = bool;
     },
     handleDarkMode(bool) {
-      localStorage.setItem('jsDarkMode', JSON.stringify(bool));
       this.darkMode = bool;
+      localStorage.setItem('jsDarkMode', JSON.stringify(bool));
     }
   },
   beforeMount() {
