@@ -1,18 +1,33 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home" :class="{dark_mode: darkMode}">
+    <LandingPage :dark-mode="darkMode"/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import LandingPage from '../components/LandingPage.vue'
 
 export default {
   name: 'Home',
+  props: ['darkMode'],
   components: {
-    HelloWorld
+    LandingPage
   }
 }
 </script>
+
+<style scoped>
+  .home {
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: auto;
+    transition: all 0.4s linear;
+  }
+  .dark_mode {
+    color: white;
+    background-color: #121212;
+  }
+</style>
